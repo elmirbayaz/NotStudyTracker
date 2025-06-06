@@ -1,0 +1,60 @@
+﻿@model StudyTracker.ViewModels.AssignmentVm
+
+@{
+    ViewData["Title"] = Model.Id == null ? "Add Assignment" : "Edit Assignment";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-controller="Assignments" asp-action="CreateOrEdit" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label asp-for="Title"></label><br />
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <br />
+
+    <div>
+        <label asp-for="Description"></label><br />
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <br />
+
+    <div>
+        <label asp-for="Deadline"></label><br />
+        <input asp-for="Deadline" type="date" class="form-control" />
+        <span asp-validation-for="Deadline" class="text-danger"></span>
+    </div>
+    <br />
+
+    <div>
+        <label asp-for="Status"></label><br />
+        <select asp-for="Status" asp-items="Model.Statuses" class="form-control">
+            <option value="">-- Select Status --</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+    <br />
+
+    <div>
+        <label asp-for="CourseId">Course</label><br />
+        <select asp-for="CourseId" asp-items="Model.Courses" class="form-control">
+            <option value="">-- Select Course --</option>
+        </select>
+        <span asp-validation-for="CourseId" class="text-danger"></span>
+    </div>
+    <br />
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-controller="Courses" asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

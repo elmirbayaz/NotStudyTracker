@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using StudyTracker.ViewModels
+@model CoursesVm
+
+<div class="text-center">
+    <h1 class="display-4">Study Tracker</h1>
+</div>
+
+<div style="display: flex; gap: 40px; align-items: flex-start;">
+    <!-- Таблица курсов -->
+    <div>
+        <h2>Courses</h2>
+        <p>
+            @Html.ActionLink("Add Course", "CreateOrEdit", "Courses")
+        </p>
+        <table border="1">
+            <tr>
+                <th>Course</th>
+                <th>Description</th>
+                <th>Professor</th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (var course in Model.Courses)
+            {
+                <tr>
+                    <td>@course.Name</td>
+                    <td>@course.Description</td>
+                    <td>@course.ProfessorName</td>
+                    <td>
+                        @Html.ActionLink("Edit", "CreateOrEdit", "Courses", new { id = course.Id }, null)
+                    </td>
+                    <td>
+                        <a href="#" onclick="document.getElementById('delete-course-@course.Id').submit(); return false;">Delete</a>
+                        <form id="delete-course-@course.Id" asp-controller="Courses" asp-action="Delete" method="post" style="display:none;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@course.Id" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <!-- Таблица заданий -->
+    <div>
+        <h2>Assignments</h2>
+        <p>
+            @Html.ActionLink("Add Assignment", "CreateOrEdit", "Assignments")
+        </p>
+        <table border="1">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Deadline</th>
+                <th>Course</th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (var assignment in Model.Assignments)
+            {
+                <tr>
+                    <td>@assignment.Title</td>
+                    <td>@assignment.Description</td>
+                    <td>@assignment.Status</td>
+                    <td>@assignment.Deadline?.ToString("dd.MM.yyyy")</td>
+                    <td>@assignment.Course?.Name</td>
+                    <td>
+                        @Html.ActionLink("Edit", "CreateOrEdit", "Assignments", new { id = assignment.Id }, null)
+                    </td>
+                    <td>
+                        <a href="#" onclick="document.getElementById('delete-assignment-@assignment.Id').submit(); return false;">Delete</a>
+                        <form id="delete-assignment-@assignment.Id" asp-controller="Assignments" asp-action="Delete" method="post" style="display:none;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@assignment.Id" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

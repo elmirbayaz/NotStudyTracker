@@ -1,0 +1,42 @@
+﻿@model StudyTracker.ViewModels.CoursesVm
+
+<form method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="Title">Заголовок</label>
+        <input type="text" id="Title" name="Title" class="form-control" value="@Model.Title" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Description">Описание</label>
+        <textarea id="Description" name="Description" class="form-control">@Model.Description</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="Deadline">Дедлайн</label>
+        <input type="date" id="Deadline" name="Deadline" class="form-control" value="@Model.Deadline?.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div class="form-group">
+        <label for="Status">Статус</label>
+        <select id="Status" name="Status" class="form-control">
+            @foreach (var status in Model.Statuses)
+            {
+                <option value="@status.Value" selected="@((status.Value == Model.Status) ? "selected" : null)">@status.Text</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="CourseId">Курс</label>
+        <select id="CourseId" name="CourseId" class="form-control" required>
+            @foreach (var course in Model.Courses)
+            {
+                <option value="@course.Value" selected="@((course.Value == Model.CourseId.ToString()) ? "selected" : null)">@course.Text</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
